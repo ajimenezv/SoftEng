@@ -28,6 +28,17 @@ public class Inventory{
     	
     }
     
+    public void removeItem(String itemCode) throws ItemNotExists {
+    	Item i = items.get(itemCode);
+		
+    	if (i == null) 
+    		{
+			throw new ItemNotExists();
+    		}
+		items.remove(i);
+		return;
+    }
+    
     // returns availability of item
     public int availabilityItem (String itemCode) throws ItemNotExists {
     	

@@ -37,7 +37,7 @@ public class InventoryTest {
 	}
 	
 	@Test
-	public void exactQuantitiesAfterAddingOrSubstructing() {
+	public void exactQuantitiesAfterAddingOrSubstracting() {
 
 	   // Tests
 	   try {
@@ -81,5 +81,56 @@ public class InventoryTest {
 	   
 	}
 
+	@Test
+	public void ItemIsUnique() {
+		try {
+			Item i=tester.searchItem("A2");
+			assertEquals("A2 should exist", "A2",i.getItemCode());
+			tester.subtractItem("A2");
+			tester.addItem(i);
+			tester.addQtyToItem("A2", 16);
+			i=tester.searchItem("A2");
+			assertEquals("There should be 16 pieces of A2",
+					16, tester.availabilityItem("A2"));
+			}
+		catch (ItemNotExists | ItemNotAvailable | ItemAlreadyExists e)
+			{
+			e.printStackTrace();
+			}
+	}
+	
+	@Test(expected = ItemAlreadyExists.class)
+	public void ItemIsDuplicate() throws ItemAlreadyExists {
 
-}
+			Item i = new Item("A2",16);
+			tester.addItem(i);
+		}
+	
+	@Test
+	public void ItemIsValid() {
+		try {
+			Item i=tester.searchItem("A1");
+			assertEquals("Item A1 should have A1 as code",
+					"A1", i.getItemCode());
+		} catch (ItemNotExists e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		}
+	
+	@Test(expected = ItemNotExists.class)
+	public void ItemNotExist() throws ItemNotExists {
+		Item i=tester.searchItem("A5");
+		assert(false) : "A5 shouldn't exist";
+	}
+	
+	@Test(expected = ItemNotExists.class)
+	public void ItemNotExist2() throws ItemNotExists {
+			tester.removeItem("A1");
+			Item i=tester.searchItem("A1");
+			assert(false) : "A1 shouldn't exist";
+
+	}
+	
+	}
